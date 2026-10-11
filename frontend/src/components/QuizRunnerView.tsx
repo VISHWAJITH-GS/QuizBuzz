@@ -181,13 +181,13 @@ export const QuizRunnerView: React.FC<QuizRunnerViewProps> = ({
               marginTop: '20px',
               padding: '16px',
               borderRadius: 'var(--radius-md)',
-              background: 'rgba(99, 102, 241, 0.08)',
-              border: '1px solid rgba(99, 102, 241, 0.2)',
+              background: '#f8fafc',
+              border: '1px solid #e2e8f0',
               fontSize: '0.9rem',
               lineHeight: 1.6
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--accent-primary)', marginBottom: '4px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: '#18181b', marginBottom: '4px' }}>
               <HelpCircle size={16} /> Explanation
             </div>
             <div style={{ color: 'var(--text-secondary)' }}>{q.explanation}</div>
@@ -214,7 +214,7 @@ export const QuizRunnerView: React.FC<QuizRunnerViewProps> = ({
           <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {config.mode.toUpperCase()} MODE • {config.difficulty.toUpperCase()}
           </span>
-          <div style={{ fontSize: '1rem', fontWeight: 700, marginTop: '2px' }}>
+          <div style={{ fontSize: '1rem', fontWeight: 700, marginTop: '2px', color: '#09090b' }}>
             Answered: {answeredCount} / {questions.length}
           </div>
         </div>
@@ -228,14 +228,14 @@ export const QuizRunnerView: React.FC<QuizRunnerViewProps> = ({
               gap: '8px',
               padding: '8px 14px',
               borderRadius: 'var(--radius-md)',
-              background: timeLeft < 60 ? 'var(--error-bg)' : 'rgba(99, 102, 241, 0.15)',
-              border: `1px solid ${timeLeft < 60 ? 'var(--error)' : 'rgba(99, 102, 241, 0.3)'}`,
-              color: timeLeft < 60 ? '#fca5a5' : 'var(--text-primary)',
+              background: timeLeft < 60 ? 'var(--error-bg)' : '#f1f5f9',
+              border: `1px solid ${timeLeft < 60 ? 'var(--error)' : '#e2e8f0'}`,
+              color: timeLeft < 60 ? 'var(--error)' : '#09090b',
               fontWeight: 700,
               fontSize: '1rem'
             }}
           >
-            <Clock size={16} color={timeLeft < 60 ? 'var(--error)' : 'var(--accent-primary)'} />
+            <Clock size={16} color={timeLeft < 60 ? 'var(--error)' : '#18181b'} />
             {formatTimer(timeLeft)}
           </div>
         )}
@@ -255,8 +255,8 @@ export const QuizRunnerView: React.FC<QuizRunnerViewProps> = ({
             padding: '12px 16px',
             borderRadius: 'var(--radius-md)',
             background: 'var(--warning-bg)',
-            border: '1px solid rgba(245, 158, 11, 0.3)',
-            color: '#fcd34d',
+            border: '1px solid #fde68a',
+            color: '#92400e',
             fontSize: '0.85rem',
             marginBottom: '20px'
           }}
@@ -325,14 +325,15 @@ export const QuizRunnerView: React.FC<QuizRunnerViewProps> = ({
             padding: '12px 16px',
             borderRadius: 'var(--radius-md)',
             background: 'var(--error-bg)',
-            color: '#fca5a5',
+            border: '1px solid #fecaca',
+            color: '#991b1b',
             display: 'flex',
             alignItems: 'center',
             gap: '10px'
           }}
         >
           <AlertCircle size={18} color="var(--error)" />
-          <span>{submitError}</span>
+          <span style={{ fontWeight: 500 }}>{submitError}</span>
         </div>
       )}
     </div>

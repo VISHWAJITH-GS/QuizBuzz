@@ -85,8 +85,8 @@ export const PreviewView: React.FC<PreviewViewProps> = ({
                   gap: '12px',
                   padding: '12px 14px',
                   borderRadius: 'var(--radius-sm)',
-                  border: `1.5px solid ${selectedType === 'document' ? 'var(--accent-primary)' : 'var(--border-subtle)'}`,
-                  background: selectedType === 'document' ? 'rgba(99, 102, 241, 0.1)' : 'transparent',
+                  border: `1.5px solid ${selectedType === 'document' ? '#18181b' : 'var(--border-subtle)'}`,
+                  background: selectedType === 'document' ? '#f1f5f9' : 'transparent',
                   cursor: 'pointer'
                 }}
               >
@@ -95,6 +95,7 @@ export const PreviewView: React.FC<PreviewViewProps> = ({
                   name="source-type"
                   checked={selectedType === 'document'}
                   onChange={() => setSelectedType('document')}
+                  style={{ accentColor: '#18181b' }}
                 />
                 <div>
                   <div style={{ fontWeight: 600, fontSize: '0.95rem' }}>Whole Document</div>
@@ -109,8 +110,8 @@ export const PreviewView: React.FC<PreviewViewProps> = ({
                   gap: '12px',
                   padding: '12px 14px',
                   borderRadius: 'var(--radius-sm)',
-                  border: `1.5px solid ${selectedType === 'section' ? 'var(--accent-primary)' : 'var(--border-subtle)'}`,
-                  background: selectedType === 'section' ? 'rgba(99, 102, 241, 0.1)' : 'transparent',
+                  border: `1.5px solid ${selectedType === 'section' ? '#18181b' : 'var(--border-subtle)'}`,
+                  background: selectedType === 'section' ? '#f1f5f9' : 'transparent',
                   cursor: 'pointer'
                 }}
               >
@@ -119,6 +120,7 @@ export const PreviewView: React.FC<PreviewViewProps> = ({
                   name="source-type"
                   checked={selectedType === 'section'}
                   onChange={() => setSelectedType('section')}
+                  style={{ accentColor: '#18181b' }}
                 />
                 <div>
                   <div style={{ fontWeight: 600, fontSize: '0.95rem' }}>Select Specific Section</div>

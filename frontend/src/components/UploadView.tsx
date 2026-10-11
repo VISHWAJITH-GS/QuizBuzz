@@ -123,15 +123,15 @@ export const UploadView: React.FC<UploadViewProps> = ({ onDocumentUploaded }) =>
             padding: '14px 18px',
             borderRadius: 'var(--radius-md)',
             background: 'var(--error-bg)',
-            border: '1px solid rgba(239, 68, 68, 0.3)',
-            color: '#fca5a5',
+            border: '1px solid #fecaca',
+            color: '#991b1b',
             display: 'flex',
             alignItems: 'center',
             gap: '12px'
           }}
         >
           <AlertCircle size={20} color="var(--error)" style={{ flexShrink: 0 }} />
-          <span style={{ fontSize: '0.95rem' }}>{error}</span>
+          <span style={{ fontSize: '0.95rem', fontWeight: 500 }}>{error}</span>
         </div>
       )}
     </div>

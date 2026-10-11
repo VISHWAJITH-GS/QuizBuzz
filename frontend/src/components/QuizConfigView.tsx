@@ -64,7 +64,7 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
       <div style={{ textAlign: 'center', marginBottom: '28px' }}>
         <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '8px' }}>Configure Your Quiz</h2>
         <p style={{ color: 'var(--text-secondary)' }}>
-          Customize questions count, difficulty, examination mode, and rules.
+          Customize question count, difficulty, examination mode, and scoring rules.
         </p>
       </div>
 
@@ -84,11 +84,12 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
                 style={{
                   padding: '12px',
                   borderRadius: 'var(--radius-md)',
-                  border: `1.5px solid ${difficulty === diff ? 'var(--accent-primary)' : 'var(--border-subtle)'}`,
-                  background: difficulty === diff ? 'rgba(99, 102, 241, 0.15)' : 'var(--bg-card)',
-                  color: difficulty === diff ? 'var(--text-primary)' : 'var(--text-secondary)',
+                  border: `1.5px solid ${difficulty === diff ? '#18181b' : 'var(--border-subtle)'}`,
+                  background: difficulty === diff ? '#18181b' : '#ffffff',
+                  color: difficulty === diff ? '#ffffff' : 'var(--text-secondary)',
                   fontWeight: 600,
-                  textTransform: 'capitalize'
+                  textTransform: 'capitalize',
+                  transition: 'all 0.15s ease'
                 }}
               >
                 {diff}
@@ -103,7 +104,7 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
             <label style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
               Number of Questions
             </label>
-            <span style={{ fontWeight: 700, color: 'var(--accent-primary)' }}>{questionCount}</span>
+            <span style={{ fontWeight: 700, color: '#18181b' }}>{questionCount}</span>
           </div>
           <input
             id="question-count-slider"
@@ -112,7 +113,7 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
             max={50}
             value={questionCount}
             onChange={(e) => setQuestionCount(Number(e.target.value))}
-            style={{ width: '100%', accentColor: 'var(--accent-primary)', cursor: 'pointer' }}
+            style={{ width: '100%', accentColor: '#18181b', cursor: 'pointer' }}
           />
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
             <span>1 Question</span>
@@ -131,8 +132,8 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
               style={{
                 padding: '16px',
                 borderRadius: 'var(--radius-md)',
-                border: `1.5px solid ${mode === 'practice' ? 'var(--accent-primary)' : 'var(--border-subtle)'}`,
-                background: mode === 'practice' ? 'rgba(99, 102, 241, 0.12)' : 'transparent',
+                border: `1.5px solid ${mode === 'practice' ? '#18181b' : 'var(--border-subtle)'}`,
+                background: mode === 'practice' ? '#f1f5f9' : 'transparent',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'flex-start',
@@ -144,11 +145,11 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
                 name="quiz-mode"
                 checked={mode === 'practice'}
                 onChange={() => setMode('practice')}
-                style={{ marginTop: '4px' }}
+                style={{ marginTop: '4px', accentColor: '#18181b' }}
               />
               <div>
                 <div style={{ fontWeight: 700, fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <BookOpen size={16} color="var(--accent-primary)" /> Practice Mode
+                  <BookOpen size={16} color="#18181b" /> Practice Mode
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
                   Immediate feedback, explanations, and learning notes after each answer.
@@ -160,8 +161,8 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
               style={{
                 padding: '16px',
                 borderRadius: 'var(--radius-md)',
-                border: `1.5px solid ${mode === 'exam' ? 'var(--accent-primary)' : 'var(--border-subtle)'}`,
-                background: mode === 'exam' ? 'rgba(99, 102, 241, 0.12)' : 'transparent',
+                border: `1.5px solid ${mode === 'exam' ? '#18181b' : 'var(--border-subtle)'}`,
+                background: mode === 'exam' ? '#f1f5f9' : 'transparent',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'flex-start',
@@ -173,11 +174,11 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
                 name="quiz-mode"
                 checked={mode === 'exam'}
                 onChange={() => setMode('exam')}
-                style={{ marginTop: '4px' }}
+                style={{ marginTop: '4px', accentColor: '#18181b' }}
               />
               <div>
                 <div style={{ fontWeight: 700, fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Award size={16} color="#d946ef" /> Exam Mode
+                  <Award size={16} color="#18181b" /> Exam Mode
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
                   Answers and feedback stay strictly hidden until final submission.
@@ -201,10 +202,11 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
                   flex: 1,
                   padding: '10px',
                   borderRadius: 'var(--radius-sm)',
-                  border: `1px solid ${navigation === 'one-by-one' ? 'var(--accent-primary)' : 'var(--border-subtle)'}`,
-                  background: navigation === 'one-by-one' ? 'rgba(99, 102, 241, 0.15)' : 'transparent',
-                  color: navigation === 'one-by-one' ? 'white' : 'var(--text-secondary)',
-                  fontSize: '0.85rem'
+                  border: `1px solid ${navigation === 'one-by-one' ? '#18181b' : 'var(--border-subtle)'}`,
+                  background: navigation === 'one-by-one' ? '#18181b' : '#ffffff',
+                  color: navigation === 'one-by-one' ? '#ffffff' : 'var(--text-secondary)',
+                  fontSize: '0.85rem',
+                  fontWeight: 500
                 }}
               >
                 One-by-One
@@ -216,10 +218,11 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
                   flex: 1,
                   padding: '10px',
                   borderRadius: 'var(--radius-sm)',
-                  border: `1px solid ${navigation === 'all-at-once' ? 'var(--accent-primary)' : 'var(--border-subtle)'}`,
-                  background: navigation === 'all-at-once' ? 'rgba(99, 102, 241, 0.15)' : 'transparent',
-                  color: navigation === 'all-at-once' ? 'white' : 'var(--text-secondary)',
-                  fontSize: '0.85rem'
+                  border: `1px solid ${navigation === 'all-at-once' ? '#18181b' : 'var(--border-subtle)'}`,
+                  background: navigation === 'all-at-once' ? '#18181b' : '#ffffff',
+                  color: navigation === 'all-at-once' ? '#ffffff' : 'var(--text-secondary)',
+                  fontSize: '0.85rem',
+                  fontWeight: 500
                 }}
               >
                 All-at-Once
@@ -237,6 +240,7 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
                 id="enable-timer-checkbox"
                 checked={enableTimer}
                 onChange={(e) => setEnableTimer(e.target.checked)}
+                style={{ accentColor: '#18181b' }}
               />
             </div>
             {enableTimer ? (
@@ -252,7 +256,7 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
                     padding: '8px',
                     borderRadius: 'var(--radius-sm)',
                     background: 'var(--bg-input)',
-                    color: 'white',
+                    color: 'var(--text-primary)',
                     border: '1px solid var(--border-subtle)',
                     fontSize: '0.9rem'
                   }}
@@ -284,7 +288,7 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
                 padding: '10px',
                 borderRadius: 'var(--radius-sm)',
                 background: 'var(--bg-input)',
-                color: 'white',
+                color: 'var(--text-primary)',
                 border: '1px solid var(--border-subtle)',
                 fontSize: '0.9rem'
               }}
@@ -307,7 +311,7 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
                 padding: '10px',
                 borderRadius: 'var(--radius-sm)',
                 background: 'var(--bg-input)',
-                color: 'white',
+                color: 'var(--text-primary)',
                 border: '1px solid var(--border-subtle)',
                 fontSize: '0.9rem'
               }}
@@ -321,8 +325,8 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
               padding: '14px',
               borderRadius: 'var(--radius-md)',
               background: 'var(--error-bg)',
-              border: '1px solid rgba(239, 68, 68, 0.3)',
-              color: '#fca5a5',
+              border: '1px solid #fecaca',
+              color: '#991b1b',
               display: 'flex',
               alignItems: 'center',
               gap: '10px',
@@ -330,7 +334,7 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
             }}
           >
             <AlertCircle size={18} color="var(--error)" />
-            <span style={{ fontSize: '0.9rem' }}>{error}</span>
+            <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>{error}</span>
           </div>
         )}
 

@@ -36,7 +36,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
           overflow: 'hidden'
         }}
       >
-        <div style={{ display: 'inline-flex', padding: '16px', borderRadius: '50%', background: 'rgba(99, 102, 241, 0.1)', marginBottom: '16px' }}>
+        <div style={{ display: 'inline-flex', padding: '16px', borderRadius: '50%', background: '#f1f5f9', border: '1px solid #e2e8f0', marginBottom: '16px' }}>
           <Award size={48} color={badgeColor} />
         </div>
 
@@ -168,13 +168,13 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                   style={{
                     padding: '12px 16px',
                     borderRadius: 'var(--radius-sm)',
-                    background: 'rgba(99, 102, 241, 0.08)',
-                    border: '1px solid rgba(99, 102, 241, 0.2)',
+                    background: '#f8fafc',
+                    border: '1px solid #e2e8f0',
                     fontSize: '0.85rem',
                     lineHeight: 1.5
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--accent-primary)', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: '#18181b', marginBottom: '4px' }}>
                     <BookOpen size={14} /> Grounded Source Explanation
                   </div>
                   <div style={{ color: 'var(--text-secondary)' }}>{r.explanation}</div>
