@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, RefreshCw } from 'lucide-react';
 import { UploadView } from './components/UploadView.js';
-import { PreviewView } from './components/PreviewView.js';
 import { QuizConfigView } from './components/QuizConfigView.js';
 import { QuizRunnerView } from './components/QuizRunnerView.js';
 import { ResultsView } from './components/ResultsView.js';
@@ -9,16 +7,14 @@ import { api } from './api/client.js';
 import type {
   DocumentMetadata,
   QuizResponse,
-  QuizSourceSelection,
   QuizSubmissionResult
 } from '@quizbuzz/shared';
 
-type Step = 'upload' | 'preview' | 'config' | 'quiz' | 'results';
+type Step = 'upload' | 'config' | 'quiz' | 'results';
 
 export const App: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<Step>('upload');
   const [document, setDocument] = useState<DocumentMetadata | null>(null);
-  const [sourceSelection, setSourceSelection] = useState<QuizSourceSelection>({ type: 'document' });
   const [activeQuiz, setActiveQuiz] = useState<QuizResponse | null>(null);
   const [quizResult, setQuizResult] = useState<QuizSubmissionResult | null>(null);
 
@@ -29,7 +25,7 @@ export const App: React.FC = () => {
         const docRes = await api.getCurrentDocument();
         if (docRes?.document) {
           setDocument(docRes.document);
-          setCurrentStep('preview');
+          setCurrentStep('config');
 
           // Check if active quiz was in progress
           try {
@@ -39,11 +35,11 @@ export const App: React.FC = () => {
               setCurrentStep('quiz');
             }
           } catch {
-            // No active quiz, stay at preview
+            // Stay at config
           }
         }
       } catch {
-        // No active document/session, stay on upload
+        // No active document, stay on upload
       }
     };
 
@@ -52,11 +48,6 @@ export const App: React.FC = () => {
 
   const handleDocumentUploaded = (doc: DocumentMetadata) => {
     setDocument(doc);
-    setCurrentStep('preview');
-  };
-
-  const handleSourceSelected = (selection: QuizSourceSelection) => {
-    setSourceSelection(selection);
     setCurrentStep('config');
   };
 
@@ -70,8 +61,12 @@ export const App: React.FC = () => {
     setCurrentStep('results');
   };
 
-  const handleResetSession = async () => {
-    await api.deleteSession();
+  const handleChangeDocument = async () => {
+    try {
+      await api.deleteDocument();
+    } catch {
+      // ignore
+    }
     setDocument(null);
     setActiveQuiz(null);
     setQuizResult(null);
@@ -80,7 +75,6 @@ export const App: React.FC = () => {
 
   const stepsList: { key: Step; label: string }[] = [
     { key: 'upload', label: 'Upload' },
-    { key: 'preview', label: 'Preview' },
     { key: 'config', label: 'Configure' },
     { key: 'quiz', label: 'Quiz' },
     { key: 'results', label: 'Results' }
@@ -90,7 +84,7 @@ export const App: React.FC = () => {
 
   return (
     <div>
-      {/* Top Header */}
+      {/* Top Header - Clean and Minimalist */}
       <header className="app-header">
         <div className="header-container">
           <div className="logo-badge">
@@ -106,22 +100,10 @@ export const App: React.FC = () => {
             />
             <div>
               <div className="logo-title">QuizBuzz AI</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Document-Grounded Exam Prep</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                Document-Grounded Exam Prep
+              </div>
             </div>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <ShieldCheck size={14} color="var(--success)" /> Zero-Data-Persistence
-            </span>
-            <button
-              id="btn-reset-session"
-              className="btn-secondary"
-              onClick={handleResetSession}
-              style={{ fontSize: '0.8rem', padding: '6px 14px' }}
-            >
-              <RefreshCw size={12} /> New Session
-            </button>
           </div>
         </div>
       </header>
@@ -151,22 +133,11 @@ export const App: React.FC = () => {
           <UploadView onDocumentUploaded={handleDocumentUploaded} />
         )}
 
-        {currentStep === 'preview' && document && (
-          <PreviewView
-            document={document}
-            onContinue={handleSourceSelected}
-            onReset={() => {
-              setDocument(null);
-              setCurrentStep('upload');
-            }}
-          />
-        )}
-
-        {currentStep === 'config' && (
+        {currentStep === 'config' && document && (
           <QuizConfigView
-            sourceSelection={sourceSelection}
+            document={document}
             onQuizGenerated={handleQuizGenerated}
-            onBack={() => setCurrentStep('preview')}
+            onChangeDocument={handleChangeDocument}
           />
         )}
 
@@ -176,7 +147,7 @@ export const App: React.FC = () => {
             onSubmitCompleted={handleQuizSubmitted}
             onDiscard={() => {
               setActiveQuiz(null);
-              setCurrentStep('preview');
+              setCurrentStep('config');
             }}
           />
         )}
@@ -186,7 +157,7 @@ export const App: React.FC = () => {
             quiz={activeQuiz}
             result={quizResult}
             onRetake={() => setCurrentStep('config')}
-            onUploadNew={handleResetSession}
+            onUploadNew={handleChangeDocument}
           />
         )}
       </main>

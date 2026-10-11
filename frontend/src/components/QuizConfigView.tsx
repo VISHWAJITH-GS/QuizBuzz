@@ -1,7 +1,20 @@
 import React, { useState } from 'react';
-import { Sparkles, Clock, Award, BookOpen, AlertCircle, Loader2 } from 'lucide-react';
+import {
+  Sparkles,
+  Clock,
+  Award,
+  BookOpen,
+  AlertCircle,
+  Loader2,
+  FileText,
+  Eye,
+  EyeOff,
+  RefreshCw,
+  Layers
+} from 'lucide-react';
 import { api } from '../api/client.js';
 import type {
+  DocumentMetadata,
   QuizConfigRequest,
   QuizDifficulty,
   QuizMode,
@@ -11,16 +24,22 @@ import type {
 } from '@quizbuzz/shared';
 
 interface QuizConfigViewProps {
-  sourceSelection: QuizSourceSelection;
+  document: DocumentMetadata;
   onQuizGenerated: (quiz: QuizResponse) => void;
-  onBack: () => void;
+  onChangeDocument: () => void;
 }
 
 export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
-  sourceSelection,
+  document,
   onQuizGenerated,
-  onBack
+  onChangeDocument
 }) => {
+  const [showPreview, setShowPreview] = useState<boolean>(false);
+  const [sourceType, setSourceType] = useState<'document' | 'section'>('document');
+  const [selectedSectionId, setSelectedSectionId] = useState<string>(
+    document.sections[0]?.id || ''
+  );
+
   const [questionCount, setQuestionCount] = useState<number>(5);
   const [difficulty, setDifficulty] = useState<QuizDifficulty>('medium');
   const [mode, setMode] = useState<QuizMode>('practice');
@@ -36,6 +55,11 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
   const handleGenerate = async () => {
     setError(null);
     setLoading(true);
+
+    const sourceSelection: QuizSourceSelection =
+      sourceType === 'document'
+        ? { type: 'document' }
+        : { type: 'section', sectionId: selectedSectionId };
 
     const config: QuizConfigRequest = {
       source: sourceSelection,
@@ -60,18 +84,195 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
   };
 
   return (
-    <div className="animate-fade-in" style={{ maxWidth: '720px', margin: '0 auto' }}>
-      <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-        <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '8px' }}>Configure Your Quiz</h2>
-        <p style={{ color: 'var(--text-secondary)' }}>
-          Customize question count, difficulty, examination mode, and scoring rules.
-        </p>
+    <div className="animate-fade-in" style={{ maxWidth: '760px', margin: '0 auto' }}>
+      {/* Top Document Summary Card */}
+      <div
+        className="glass-panel"
+        style={{
+          padding: '16px 20px',
+          marginBottom: '20px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '12px'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div
+            style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '8px',
+              background: '#f1f5f9',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#18181b'
+            }}
+          >
+            <FileText size={20} />
+          </div>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: '1rem', color: '#09090b' }}>
+              {document.name}
+            </div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+              {document.characterCount.toLocaleString()} characters • {document.sections.length} section(s)
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <button
+            id="btn-toggle-preview"
+            type="button"
+            className="btn-secondary"
+            style={{ fontSize: '0.85rem', padding: '7px 14px' }}
+            onClick={() => setShowPreview(!showPreview)}
+          >
+            {showPreview ? <EyeOff size={14} /> : <Eye size={14} />}
+            {showPreview ? 'Hide Preview' : 'View Preview'}
+          </button>
+          <button
+            id="btn-change-doc"
+            type="button"
+            className="btn-secondary"
+            style={{ fontSize: '0.85rem', padding: '7px 14px' }}
+            onClick={onChangeDocument}
+          >
+            <RefreshCw size={13} /> Change File
+          </button>
+        </div>
       </div>
 
+      {/* Optional Document Text Preview Drawer (Shown only when user wants it) */}
+      {showPreview && (
+        <div
+          id="preview-collapsible-panel"
+          className="glass-panel animate-fade-in"
+          style={{
+            padding: '20px',
+            marginBottom: '24px',
+            background: '#ffffff',
+            border: '1.5px solid #cbd5e1'
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#18181b', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              Document Text Preview
+            </span>
+            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+              First 2,000 characters
+            </span>
+          </div>
+          <div
+            id="text-preview-box"
+            style={{
+              background: 'var(--bg-input)',
+              borderRadius: 'var(--radius-sm)',
+              padding: '16px',
+              maxHeight: '260px',
+              overflowY: 'auto',
+              fontSize: '0.9rem',
+              lineHeight: '1.6',
+              color: 'var(--text-secondary)',
+              whiteSpace: 'pre-wrap',
+              border: '1px solid var(--border-subtle)'
+            }}
+          >
+            {document.preview}
+          </div>
+        </div>
+      )}
+
+      {/* Main Configuration Card */}
       <div className="glass-panel" style={{ padding: '32px' }}>
+        <h2 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '6px' }}>Quiz Configuration</h2>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '24px' }}>
+          Select the scope, difficulty, and examination settings for your quiz.
+        </p>
+
+        {/* Section / Scope Picker if multiple sections are detected */}
+        {document.sections.length > 1 && (
+          <div style={{ marginBottom: '28px', paddingBottom: '24px', borderBottom: '1px solid var(--border-subtle)' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.9rem', fontWeight: 600, marginBottom: '12px', color: 'var(--text-secondary)' }}>
+              <Layers size={16} /> Question Source Scope
+            </label>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: sourceType === 'section' ? '12px' : '0' }}>
+              <label
+                style={{
+                  padding: '12px 14px',
+                  borderRadius: 'var(--radius-sm)',
+                  border: `1.5px solid ${sourceType === 'document' ? '#18181b' : 'var(--border-subtle)'}`,
+                  background: sourceType === 'document' ? '#f1f5f9' : 'transparent',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px'
+                }}
+              >
+                <input
+                  type="radio"
+                  name="source-type"
+                  checked={sourceType === 'document'}
+                  onChange={() => setSourceType('document')}
+                  style={{ accentColor: '#18181b' }}
+                />
+                <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Whole Document</span>
+              </label>
+
+              <label
+                style={{
+                  padding: '12px 14px',
+                  borderRadius: 'var(--radius-sm)',
+                  border: `1.5px solid ${sourceType === 'section' ? '#18181b' : 'var(--border-subtle)'}`,
+                  background: sourceType === 'section' ? '#f1f5f9' : 'transparent',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px'
+                }}
+              >
+                <input
+                  type="radio"
+                  name="source-type"
+                  checked={sourceType === 'section'}
+                  onChange={() => setSourceType('section')}
+                  style={{ accentColor: '#18181b' }}
+                />
+                <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Specific Section</span>
+              </label>
+            </div>
+
+            {sourceType === 'section' && (
+              <select
+                id="section-select-dropdown"
+                value={selectedSectionId}
+                onChange={(e) => setSelectedSectionId(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  background: 'var(--bg-input)',
+                  color: 'var(--text-primary)',
+                  border: '1px solid var(--border-subtle)',
+                  borderRadius: 'var(--radius-sm)',
+                  fontSize: '0.9rem'
+                }}
+              >
+                {document.sections.map((sec) => (
+                  <option key={sec.id} value={sec.id}>
+                    {sec.title} {sec.startPage ? `(Page ${sec.startPage})` : ''}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+        )}
+
         {/* Difficulty */}
-        <div style={{ marginBottom: '28px' }}>
-          <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, marginBottom: '12px', color: 'var(--text-secondary)' }}>
+        <div style={{ marginBottom: '24px' }}>
+          <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, marginBottom: '10px', color: 'var(--text-secondary)' }}>
             Difficulty Level
           </label>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
@@ -99,7 +300,7 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
         </div>
 
         {/* Question Count */}
-        <div style={{ marginBottom: '28px' }}>
+        <div style={{ marginBottom: '24px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
             <label style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
               Number of Questions
@@ -123,8 +324,8 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
         </div>
 
         {/* Mode Selection */}
-        <div style={{ marginBottom: '28px' }}>
-          <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, marginBottom: '12px', color: 'var(--text-secondary)' }}>
+        <div style={{ marginBottom: '24px' }}>
+          <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, marginBottom: '10px', color: 'var(--text-secondary)' }}>
             Quiz Mode
           </label>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
@@ -152,7 +353,7 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
                   <BookOpen size={16} color="#18181b" /> Practice Mode
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                  Immediate feedback, explanations, and learning notes after each answer.
+                  Instant feedback and explanation after each question.
                 </div>
               </div>
             </label>
@@ -181,7 +382,7 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
                   <Award size={16} color="#18181b" /> Exam Mode
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                  Answers and feedback stay strictly hidden until final submission.
+                  Answers stay hidden until final submission.
                 </div>
               </div>
             </label>
@@ -189,7 +390,7 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
         </div>
 
         {/* Navigation & Optional Timer */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '28px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px' }}>
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '8px', color: 'var(--text-secondary)' }}>
               Navigation Layout
@@ -272,10 +473,10 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
         </div>
 
         {/* Scoring settings */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '28px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px' }}>
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '6px', color: 'var(--text-secondary)' }}>
-              Marks per Correct Answer
+              Marks per Correct
             </label>
             <input
               type="number"
@@ -338,29 +539,24 @@ export const QuizConfigView: React.FC<QuizConfigViewProps> = ({
           </div>
         )}
 
-        <div style={{ display: 'flex', gap: '14px' }}>
-          <button type="button" className="btn-secondary" onClick={onBack} disabled={loading}>
-            Back
-          </button>
-          <button
-            id="btn-generate-quiz"
-            type="button"
-            className="btn-primary"
-            onClick={handleGenerate}
-            disabled={loading}
-            style={{ flex: 1, justifyContent: 'center' }}
-          >
-            {loading ? (
-              <>
-                <Loader2 className="animate-spin" size={18} /> Generating Grounded Questions...
-              </>
-            ) : (
-              <>
-                <Sparkles size={18} /> Generate Quiz
-              </>
-            )}
-          </button>
-        </div>
+        <button
+          id="btn-generate-quiz"
+          type="button"
+          className="btn-primary"
+          onClick={handleGenerate}
+          disabled={loading}
+          style={{ width: '100%', justifyContent: 'center', padding: '14px' }}
+        >
+          {loading ? (
+            <>
+              <Loader2 className="animate-spin" size={18} /> Generating Grounded Questions...
+            </>
+          ) : (
+            <>
+              <Sparkles size={18} /> Generate Quiz
+            </>
+          )}
+        </button>
       </div>
     </div>
   );

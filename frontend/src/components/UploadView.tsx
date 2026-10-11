@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Upload, FileText, AlertCircle, Loader2 } from 'lucide-react';
+import { Upload, AlertCircle, Loader2 } from 'lucide-react';
 import { api } from '../api/client.js';
 import type { DocumentMetadata } from '@quizbuzz/shared';
 
@@ -59,25 +59,25 @@ export const UploadView: React.FC<UploadViewProps> = ({ onDocumentUploaded }) =>
   };
 
   return (
-    <div className="animate-fade-in" style={{ maxWidth: '680px', margin: '0 auto' }}>
-      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+    <div className="animate-fade-in" style={{ maxWidth: '640px', margin: '0 auto' }}>
+      <div style={{ textAlign: 'center', marginBottom: '28px' }}>
         <img
           src="/logo.png"
           alt="QuizBuzz AI Logo"
           style={{
-            width: '72px',
-            height: '72px',
+            width: '64px',
+            height: '64px',
             margin: '0 auto 16px',
             display: 'block',
-            borderRadius: '16px',
-            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.08)'
+            borderRadius: '14px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)'
           }}
         />
-        <h1 style={{ fontSize: '2.4rem', fontWeight: 800, marginBottom: '12px' }}>
-          Turn your notes into smart quizzes
+        <h1 style={{ fontSize: '2.2rem', fontWeight: 800, marginBottom: '8px' }}>
+          Upload Document
         </h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
-          Upload your lecture slides, notes, or textbooks. QuizBuzz generates strictly grounded questions with instant feedback.
+        <p style={{ color: 'var(--text-secondary)', fontSize: '1rem' }}>
+          Select a document to automatically generate your quiz.
         </p>
       </div>
 
@@ -104,27 +104,18 @@ export const UploadView: React.FC<UploadViewProps> = ({ onDocumentUploaded }) =>
 
         <div className="dropzone-icon">
           {loading ? (
-            <Loader2 className="animate-spin" size={32} />
+            <Loader2 className="animate-spin" size={30} />
           ) : (
-            <Upload size={32} />
+            <Upload size={30} />
           )}
         </div>
 
-        <h3 style={{ fontSize: '1.25rem', marginBottom: '8px', fontWeight: 600 }}>
+        <h3 style={{ fontSize: '1.2rem', marginBottom: '6px', fontWeight: 600 }}>
           {loading ? 'Processing document...' : 'Click to upload or drag & drop'}
         </h3>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '20px' }}>
-          Supported formats: PDF, DOCX, TXT, PPTX (up to 100 MB)
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+          PDF, DOCX, TXT, PPTX (up to 100 MB)
         </p>
-
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <FileText size={14} color="var(--accent-primary)" /> Text-based PDFs only (no OCR)
-          </span>
-          <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <FileText size={14} color="var(--accent-primary)" /> Zero permanent storage
-          </span>
-        </div>
       </div>
 
       {error && (
@@ -132,7 +123,7 @@ export const UploadView: React.FC<UploadViewProps> = ({ onDocumentUploaded }) =>
           id="upload-error-alert"
           style={{
             marginTop: '20px',
-            padding: '14px 18px',
+            padding: '12px 16px',
             borderRadius: 'var(--radius-md)',
             background: 'var(--error-bg)',
             border: '1px solid #fecaca',
@@ -142,8 +133,8 @@ export const UploadView: React.FC<UploadViewProps> = ({ onDocumentUploaded }) =>
             gap: '12px'
           }}
         >
-          <AlertCircle size={20} color="var(--error)" style={{ flexShrink: 0 }} />
-          <span style={{ fontSize: '0.95rem', fontWeight: 500 }}>{error}</span>
+          <AlertCircle size={18} color="var(--error)" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>{error}</span>
         </div>
       )}
     </div>
