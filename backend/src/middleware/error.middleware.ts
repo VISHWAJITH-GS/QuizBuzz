@@ -38,7 +38,7 @@ export function errorHandler(
       res.status(400).json({
         error: {
           code: 'FILE_TOO_LARGE',
-          message: 'The file exceeds the maximum 10 MB limit.',
+          message: 'The file exceeds the maximum 100 MB limit.',
           requestId
         }
       });

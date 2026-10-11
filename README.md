@@ -26,7 +26,7 @@ QuizBuzz AI turns study documents into document-grounded multiple-choice quizzes
 
 - **Frontend**: React 18, TypeScript, Vite, custom design system (`index.css`) with dark-mode aesthetic, step transitions, practice & exam modes, countdown timer, and `sessionStorage` same-tab recovery.
 - **Backend API**: Node.js, Express, TypeScript, Zod environment validation.
-- **Document Parsers**: Multi-format engine supporting **PDF** (`pdf-parse`), **DOCX** (`mammoth`), **TXT**, and **PPTX** (`officeparser`) up to 10 MB, with section and heading detection.
+- **Document Parsers**: Multi-format engine supporting **PDF** (`pdf-parse`), **DOCX** (`mammoth`), **TXT**, and **PPTX** (`officeparser`) up to 100 MB, with section and heading detection.
 - **AI Engine**: Ollama client supporting Qwen3/Qwen2.5 with prompt injection defense, structural JSON enforcement, 4-attempt retry pipeline, and document-grounded fallback generator for offline testing.
 - **Data Minimization**: PostgreSQL stores **only** ephemeral session metadata (`session_id`, `created_at`, `expires_at`). Uploaded files, extracted text, questions, answer keys, and scores are never permanently stored.
 - **Server-Side Scoring**: Authoritative grading on backend with secret answer keys during exam mode and configurable negative marking.

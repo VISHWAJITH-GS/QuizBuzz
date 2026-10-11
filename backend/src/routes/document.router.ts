@@ -12,7 +12,7 @@ export const documentRouter = Router();
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 10 * 1024 * 1024 // 10 MB strict limit
+    fileSize: 100 * 1024 * 1024 // 100 MB limit
   }
 });
 

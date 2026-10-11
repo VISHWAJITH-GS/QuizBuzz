@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Zap, ShieldCheck, RefreshCw } from 'lucide-react';
+import { ShieldCheck, RefreshCw } from 'lucide-react';
 import { UploadView } from './components/UploadView.js';
 import { PreviewView } from './components/PreviewView.js';
 import { QuizConfigView } from './components/QuizConfigView.js';
@@ -94,9 +94,16 @@ export const App: React.FC = () => {
       <header className="app-header">
         <div className="header-container">
           <div className="logo-badge">
-            <div className="logo-icon">
-              <Zap size={20} />
-            </div>
+            <img
+              src="/logo.png"
+              alt="QuizBuzz Logo"
+              style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '8px',
+                objectFit: 'contain'
+              }}
+            />
             <div>
               <div className="logo-title">QuizBuzz AI</div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Document-Grounded Exam Prep</div>

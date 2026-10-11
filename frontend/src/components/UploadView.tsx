@@ -16,9 +16,9 @@ export const UploadView: React.FC<UploadViewProps> = ({ onDocumentUploaded }) =>
   const handleFile = async (file: File) => {
     setError(null);
 
-    // Validate size (10 MB)
-    if (file.size > 10 * 1024 * 1024) {
-      setError('File exceeds maximum upload limit of 10 MB.');
+    // Validate size (100 MB)
+    if (file.size > 100 * 1024 * 1024) {
+      setError('File exceeds maximum upload limit of 100 MB.');
       return;
     }
 
@@ -61,6 +61,18 @@ export const UploadView: React.FC<UploadViewProps> = ({ onDocumentUploaded }) =>
   return (
     <div className="animate-fade-in" style={{ maxWidth: '680px', margin: '0 auto' }}>
       <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <img
+          src="/logo.png"
+          alt="QuizBuzz AI Logo"
+          style={{
+            width: '72px',
+            height: '72px',
+            margin: '0 auto 16px',
+            display: 'block',
+            borderRadius: '16px',
+            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.08)'
+          }}
+        />
         <h1 style={{ fontSize: '2.4rem', fontWeight: 800, marginBottom: '12px' }}>
           Turn your notes into smart quizzes
         </h1>
@@ -102,7 +114,7 @@ export const UploadView: React.FC<UploadViewProps> = ({ onDocumentUploaded }) =>
           {loading ? 'Processing document...' : 'Click to upload or drag & drop'}
         </h3>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '20px' }}>
-          Supported formats: PDF, DOCX, TXT, PPTX (up to 10 MB)
+          Supported formats: PDF, DOCX, TXT, PPTX (up to 100 MB)
         </p>
 
         <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
