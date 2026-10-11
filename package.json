@@ -1,0 +1,27 @@
+{
+  "name": "quizbuzz-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "QuizBuzz AI - Document-grounded quiz generation for college students",
+  "workspaces": [
+    "shared",
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev:backend": "npm --workspace=backend run dev",
+    "dev:frontend": "npm --workspace=frontend run dev",
+    "build": "npm --workspace=shared run build && npm --workspace=backend run build && npm --workspace=frontend run build",
+    "test": "npm --workspace=backend run test",
+    "lint": "npm --workspace=shared run build && npm --workspace=backend run lint && npm --workspace=frontend run lint"
+  },
+  "keywords": [
+    "quiz",
+    "ai",
+    "ollama",
+    "qwen",
+    "education"
+  ],
+  "author": "",
+  "license": "ISC"
+}
