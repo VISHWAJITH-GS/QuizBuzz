@@ -12,7 +12,7 @@ const envSchema = z.object({
   CLEANUP_INTERVAL_MINUTES: z.coerce.number().default(5),
   TEMP_UPLOAD_DIR: z.string().default('./.tmp/uploads'),
   OLLAMA_BASE_URL: z.string().default('http://localhost:11434'),
-  OLLAMA_MODEL: z.string().default('qwen2.5:3b'),
+  OLLAMA_MODEL: z.string().default('qwen3:1.7b '),
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development')
 });
 

@@ -38,7 +38,7 @@ QuizBuzz AI turns study documents into document-grounded multiple-choice quizzes
 ### 1. Prerequisites
 - **Node.js**: v20 or v22+ LTS (`node -v`)
 - **Docker Desktop** (optional, for PostgreSQL service): `docker compose up -d`
-- **Ollama** (optional for live GPU model): [ollama.ai](https://ollama.com/) with `ollama pull qwen2.5:3b`
+- **Ollama** (optional for live GPU model): [ollama.ai](https://ollama.com/) with `ollama pull qwen3:1.7b `
 
 ### 2. Install Dependencies
 ```bash
